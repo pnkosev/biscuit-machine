@@ -1,10 +1,12 @@
 package entity.api;
 
-public interface Switchable {
+public interface Switch {
 
     void turnOn();
 
     void pause();
 
     void turnOff();
+
+    String getState();
 }

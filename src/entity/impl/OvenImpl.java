@@ -3,64 +3,36 @@ package entity.impl;
 import entity.api.Oven;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class OvenImpl implements Oven {
 
-    private int temperature;
-    private Timer timer;
-
-    public OvenImpl() {
-        this.timer = new Timer();
-    }
+    private int currentTemperature;
 
     @Override
-    public void turnOn(int targetTemperature) {
+    public void turnOn(int targetTemperature) throws InterruptedException {
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.printf("Oven is heating. Currently at %d degrees!%n", temperature);
+        while (this.currentTemperature < targetTemperature) {
+            this.currentTemperature += 10;
 
-                if (temperature == targetTemperature) {
-                    timer.cancel();
-                    return;
-                }
+            System.out.printf("Oven is heating. Currently at %d degrees!%n", this.currentTemperature);
 
-                temperature += 60;
-            }
-        };
-
-        timer.scheduleAtFixedRate(task, 0, 1000);
-
-        this.pause(targetTemperature - 20);
+            Thread.sleep(500L);
+        }
     }
 
     @Override
     public void turnOff() {
-        this.temperature = 0;
+        this.currentTemperature = 0;
     }
 
-    private void pause(int minimumTemperature) {
+    public void pause(int minimumTemperature) throws InterruptedException {
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                System.out.printf("Oven is paused. Currently at %d degrees!%n", temperature);
+        while (this.currentTemperature > minimumTemperature) {
+            this.currentTemperature -= 10;
 
-                if (temperature == minimumTemperature) {
-                    timer.cancel();
-                    return;
-                }
+            System.out.printf("Oven is paused. Currently at %d degrees!%n", this.currentTemperature);
 
-                temperature -= 1;
-            }
-        };
-
-        while (this.temperature >= minimumTemperature) {
-            this.timer.scheduleAtFixedRate(task, 0, 1000);
+            Thread.sleep(500L);
         }
-
-        this.turnOn(minimumTemperature + 20);
     }
 }
