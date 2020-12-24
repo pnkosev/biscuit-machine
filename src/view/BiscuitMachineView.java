@@ -15,8 +15,6 @@ public class BiscuitMachineView {
     private JRadioButton onBtn;
     private JRadioButton pauseBtn;
     private JRadioButton offBtn;
-    private JTextArea textArea;
-    private JLabel textLabel;
 
     public BiscuitMachineView() {
         aSwitch = new SwitchImpl();
@@ -25,16 +23,10 @@ public class BiscuitMachineView {
     public void show() {
         JFrame frame = new JFrame("Biscuit Machine");
 
-        Container pane = frame.getContentPane();
-        pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+        Container panel = frame.getContentPane();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        this.setUpButtons(pane);
-
-        this.textArea = new JTextArea();
-        this.textLabel = new JLabel("Output");
-
-        pane.add(this.textArea);
-        pane.add(this.textLabel);
+        this.setUpButtons(panel);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);

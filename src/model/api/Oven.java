@@ -9,4 +9,6 @@ public interface Oven {
     void turnOff();
 
     boolean isReady();
+
+    boolean isDesiredTemperature(int minDesiredTemp, int maxDesiredTemp);
 }

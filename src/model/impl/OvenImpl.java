@@ -46,4 +46,9 @@ public class OvenImpl implements Oven {
 
     @Override
     public boolean isReady() { return this.isReady; }
+
+    @Override
+    public boolean isDesiredTemperature(int min, int max) {
+        return this.currentTemperature >= min && this.currentTemperature <= max;
+    }
 }

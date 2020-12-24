@@ -11,6 +11,8 @@ public class Biscuit {
         this.biscuitState = BiscuitState.RAW;
     }
 
+    public BiscuitState getBiscuitState() { return this.biscuitState; }
+
     public void setBiscuitState(BiscuitState biscuitState) {
         this.biscuitState = biscuitState;
     }
