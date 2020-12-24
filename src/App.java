@@ -1,8 +1,10 @@
+import controller.BiscuitMachineController;
+
 public class App {
 
     public static void main(String[] args) {
 
-        Controller controller = new Controller();
+        BiscuitMachineController controller = new BiscuitMachineController();
 
         controller.run();
     }
