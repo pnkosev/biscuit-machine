@@ -2,7 +2,7 @@ package controller;
 
 import manager.BiscuitMachineManager;
 import model.*;
-import model.impl.OvenImpl;
+import model.OvenImpl;
 import view.BiscuitMachineView;
 
 
@@ -12,7 +12,7 @@ public class BiscuitMachineController {
     private BiscuitMachineManager manager;
 
     public BiscuitMachineController() {
-        this.view = new BiscuitMachineView();
+        this.view = new BiscuitMachineView("Biscuit Machine UI");
         this.manager = new BiscuitMachineManager(
                 new Motor(),
                 new Extruder(),
@@ -23,11 +23,11 @@ public class BiscuitMachineController {
     }
 
     public void run() {
-        this.view.show();
+        this.view.showGUI();
 
         while (true) {
 
-            SwitchPosition switchState = this.view.getSwitchState();
+            SwitchPosition switchState = this.view.getSwitchPosition();
 
             switch (switchState) {
 
@@ -41,6 +41,9 @@ public class BiscuitMachineController {
                     this.manager.turnOff();
                     break;
             }
+
+            this.view.updateBiscuitCount(this.manager.getBiscuitCount());
+            this.view.updateOvenTemperature(this.manager.getOvenTemperature());
 
             this.revolution(500);
         }

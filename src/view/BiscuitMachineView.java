@@ -1,61 +1,50 @@
 package view;
 
-import controller.BiscuitMachineController;
 import model.SwitchPosition;
-import model.api.Switch;
-import model.impl.SwitchImpl;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BiscuitMachineView {
+public class BiscuitMachineView extends JFrame {
 
-    private Switch aSwitch;
+    private SwitchPanel switchPanel;
+    private InfoPanel infoPanel;
 
-    private JRadioButton onBtn;
-    private JRadioButton pauseBtn;
-    private JRadioButton offBtn;
+    private SwitchPosition switchPosition;
 
-    public BiscuitMachineView() {
-        aSwitch = new SwitchImpl();
+    public BiscuitMachineView(String title) {
+        super(title);
+
+        this.switchPanel = new SwitchPanel();
+        this.infoPanel = new InfoPanel();
+        this.switchPosition = SwitchPosition.OFF;
     }
 
-    public void show() {
-        JFrame frame = new JFrame("Biscuit Machine");
+    public void showGUI() {
 
-        Container panel = frame.getContentPane();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        this.switchPanel.setListener(switchPosition -> {
+            this.switchPosition = switchPosition;
+        });
 
-        this.setUpButtons(panel);
+        setLayout(new BorderLayout());
+        add(this.switchPanel, BorderLayout.NORTH);
+        add(this.infoPanel, BorderLayout.SOUTH);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 300);
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
-    public SwitchPosition getSwitchState() {
-        return this.aSwitch.getState();
+    public SwitchPosition getSwitchPosition() {
+        return this.switchPosition;
     }
 
-    private void setUpButtons(Container pane) {
-        this.onBtn = new JRadioButton("turn on");
-        this.onBtn.addActionListener(e -> this.aSwitch.turnOn());
+    public void updateOvenTemperature(int temperature) {
+        this.infoPanel.setOvenTemperature(temperature);
+    }
 
-        this.pauseBtn = new JRadioButton("pause");
-        this.pauseBtn.addActionListener(e -> this.aSwitch.pause());
-
-        this.offBtn = new JRadioButton("turn off");
-        this.offBtn.addActionListener(e -> this.aSwitch.turnOff());
-        this.offBtn.doClick();
-
-        ButtonGroup btnGroup = new ButtonGroup();
-        btnGroup.add(onBtn);
-        btnGroup.add(pauseBtn);
-        btnGroup.add(offBtn);
-
-        pane.add(onBtn);
-        pane.add(pauseBtn);
-        pane.add(offBtn);
+    public void updateBiscuitCount(int biscuits) {
+        this.infoPanel.setBiscuitCount(biscuits);
     }
 }

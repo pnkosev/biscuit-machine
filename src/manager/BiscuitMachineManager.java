@@ -1,16 +1,17 @@
 package manager;
 
 import model.*;
-import model.api.Oven;
+import model.Oven;
 
 import java.util.Optional;
 
 public class BiscuitMachineManager {
 
-    private final static int MAXIMUM_HEAT = 240;
-    private final static int MINIMUM_HEAT = 220;
+    private final static int TARGET_TEMPERATURE = 240;
 
-    private int biscuitsCooked;
+    private int biscuitCount;
+
+    private int ovenTemperature;
 
     private Motor motor;
 
@@ -37,9 +38,9 @@ public class BiscuitMachineManager {
     }
 
     public void turnOn() {
-        this.keepOvenHeated();
+        this.oven.turnOn(TARGET_TEMPERATURE);
 
-        if (this.oven.isDesiredTemperature(MINIMUM_HEAT, MAXIMUM_HEAT)) {
+        if (this.oven.isDesiredTemperature(TARGET_TEMPERATURE)) {
             this.motor.turnOn();
 
             Biscuit biscuit = this.extruder.extrude();
@@ -52,17 +53,12 @@ public class BiscuitMachineManager {
             Optional<Biscuit> optionalBiscuit = this.conveyor.turn();
 
             if (optionalBiscuit.isPresent()) {
-                this.biscuitsCooked++;
+                this.biscuitCount++;
             }
-
-//            System.out.println(this.biscuitsCooked);
         }
     }
 
-    public void pause() {
-
-        this.keepOvenHeated();
-    }
+    public void pause() { this.oven.turnOn(TARGET_TEMPERATURE); }
 
     public void turnOff() {
 
@@ -70,22 +66,16 @@ public class BiscuitMachineManager {
 
         Optional<Biscuit> biscuit = this.conveyor.turnOff();
 
-        if (biscuit.isPresent()) {
-            this.biscuitsCooked++;
+        if (biscuit.isPresent() && this.oven.isDesiredTemperature(TARGET_TEMPERATURE)) {
+            this.biscuitCount++;
         } else {
             this.motor.turnOff();
         }
-
-//        System.out.println(this.biscuitsCooked);
     }
 
-    private void keepOvenHeated() {
-        boolean isReady = this.oven.isReady();
-
-        if (!isReady) {
-            this.oven.turnOn(MAXIMUM_HEAT);
-        } else {
-            this.oven.pause(MINIMUM_HEAT);
-        }
+    public int getBiscuitCount() {
+        return this.biscuitCount;
     }
+
+    public int getOvenTemperature() { return this.oven.getCurrentTemperature(); }
 }
