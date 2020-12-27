@@ -1,4 +1,4 @@
-const oven = () => {
+module.exports = oven = () => {
 
     let state = {
         currentTemp: 0,
@@ -46,5 +46,3 @@ const oven = () => {
         }
     }
 }
-
-module.exports = oven;
