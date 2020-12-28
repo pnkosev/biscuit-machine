@@ -1,27 +1,32 @@
-const queueFactoryFunc = require("../utils/queue");
+import { queue } from "../utils/queue.js";
 
-module.exports = conveyor = (size) => {
+const conveyor = (size) => {
 
-    let belt = queueFactoryFunc();
+    let slots = queue();
     const beltLength = size;
 
     return {
-        add: (item) => {  
-            belt.add(item);
+        add: (item) => {
+            slots.add(item);
         },
         turnOn: () => {
-            if (belt.size() == beltLength) {
-                return belt.remove();
+            if (slots.size() == beltLength) {
+                return slots.remove();
             }
 
             return null;
         },
         turnOff: () => {
-            if (!belt.isEmpty()) {
-                return belt.remove();
+            if (!slots.isEmpty()) {
+                return slots.remove();
             }
 
             return null;
+        },
+        getSlotOccupancy: () => {
+            return slots.size();
         }
     }
-}
+};
+
+export { conveyor };

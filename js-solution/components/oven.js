@@ -1,16 +1,17 @@
-module.exports = oven = () => {
+const oven = () => {
 
     let state = {
         currentTemp: 0,
+        targetTemp: 0,
         lowerTempMargin: 20,
         step: 10,
         isReady: false
     };
 
-    const checkTemp = (targetTemp) => {
-        if (state.currentTemp >= targetTemp) {
+    const checkTemp = () => {
+        if (state.currentTemp == state.targetTemp) {
             state.isReady = true;
-        } else if (state.currentTemp <= targetTemp - state.lowerTempMargin) {
+        } else if (state.currentTemp <= state.targetTemp - state.lowerTempMargin) {
             state.isReady = false;
         }
     };
@@ -24,13 +25,18 @@ module.exports = oven = () => {
     };
 
     return {
-        turnOn: (targetTemp) => {
-            checkTemp(targetTemp);
+        setTargetTemperature: (targetTemp) => {
+            state.targetTemp = targetTemp;
+        },
+        turnOn: () => {
+            checkTemp();
             if (!state.isReady) {
                 increaseTemp();
             } else {
                 decreaseTemp();
             }
+
+            console.log(state.currentTemp);
         },
         turnOff: () => {
             if (state.currentTemp > 0) {
@@ -40,9 +46,11 @@ module.exports = oven = () => {
         getCurrentTemp: () => {
             return state.currentTemp;
         },
-        isDesiredTemp: (targetTemp) => {
-            return state.currentTemp >= targetTemp - state.lowerTempMargin
-                && state.currentTemp <= targetTemp;
+        isDesiredTemp: () => {
+            return state.currentTemp >= state.targetTemp - state.lowerTempMargin
+                && state.currentTemp <= state.targetTemp;
         }
     }
-}
+};
+
+export { oven };

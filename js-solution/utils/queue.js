@@ -1,33 +1,35 @@
-module.exports = queue = () => {
+const queue = () => {
 
     let arr = [];
-    let index = 0;
+    let length = arr.length;
 
     return {
         add: (item) => {
             arr.unshift(item);
-            index++;
+            length++;
         },
         remove: () => {
-            if (arr.length != 0) {
-                index--;
+            if (length > 0) {
+                length--;
                 return arr.pop();
             }
 
             return null;
         },
         peek: () => {
-            if (arr.length != 0) {
-                return arr[arr.length - 1];
+            if (length > 0) {
+                return arr[length - 1];
             }
 
             return null;
         },
         size: () => {
-            return arr.length;
+            return length;
         },
         isEmpty: () => {
-            return index === 0;
+            return length === 0;
         }
     }
-}
+};
+
+export { queue };

@@ -1,6 +1,6 @@
-const biscuitState = require("./biscuitState");
+import { biscuitState } from "./biscuitState.js";
 
-module.exports = biscuit = (flavor) => {
+const biscuit = (flavor) => {
 
     let state = {
         flavor,
@@ -15,4 +15,6 @@ module.exports = biscuit = (flavor) => {
             state.biscuitState = newState;
         }
     }
-}
+};
+
+export { biscuit };

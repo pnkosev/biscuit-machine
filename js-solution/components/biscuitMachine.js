@@ -1,32 +1,60 @@
-const ovenFactoryFunc = require("./oven");
-const motorFactoryFun = require("./motor");
-const stamperFactoryFunc = require("./stamper");
-const extruderFactoryFunc = require("./extruder");
-const conveyorFactoryFunc = require("./conveyor");
-const biscuitState = require("./biscuitState");
+const biscuitMachineFactory = (oven, motor, extruder, stamper, conveyor, targetTemperature) => {
 
-const oven = ovenFactoryFunc();
+    const machinery = {
+        oven,
+        motor,
+        extruder,
+        stamper,
+        conveyor
+    };
 
-oven.turnOn(240);
-oven.turnOn(240);
-oven.turnOn(240);
-oven.turnOn(240);
-oven.turnOff();
-console.log(oven.getCurrentTemp());
+    let state = {
+        targetTemperature,
+        bisctuitCount: 0,
+    };
 
-const extruder = extruderFactoryFunc();
-const biscuit = extruder.extrude();
-biscuit.setBiscuitState(biscuitState.STAMPED);
+    machinery.oven.setTargetTemperature(state.targetTemperature);
 
-console.log(biscuit.getBiscuitState());
+    return {
+        turnOn: () => {
+            machinery.oven.turnOn();
 
-const conveyor = conveyorFactoryFunc(7);
+            if (machinery.oven.isDesiredTemp()) {
 
+                machinery.motor.turnOn();
 
-for (let i = 0; i < 10; i++) {
-    conveyor.add(extruder.extrude());
-    const b = conveyor.turnOn();
-    if (b != null) {
-        console.log(b);
+                let biscuit = machinery.extruder.extrude();
+
+                machinery.conveyor.add(biscuit);
+
+                if (machinery.conveyor.getSlotOccupancy() > 1) {
+                    machinery.stamper.stamp(biscuit);
+                }
+
+                const optionalBiscuit = machinery.conveyor.turnOn();
+
+                if (optionalBiscuit != null) {
+                    state.bisctuitCount++;
+                }
+            }
+
+            return state.bisctuitCount;
+        },
+        pause: () => {
+            machinery.oven.turnOn();
+        },
+        turnOff: () => {
+            machinery.oven.turnOff();
+
+            const optionalBiscuit = machinery.conveyor.turnOff();
+            
+            if (optionalBiscuit != null && machinery.oven.isDesiredTemp()) {
+                state.bisctuitCount++;
+            } else {
+                machinery.motor.turnOff();
+            }
+        }
     }
-}
+};
+
+export { biscuitMachineFactory };

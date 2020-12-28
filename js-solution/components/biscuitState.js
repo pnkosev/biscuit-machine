@@ -6,4 +6,4 @@ const biscuitState = {
 
 Object.freeze(biscuitState);
 
-module.exports = biscuitState;
+export { biscuitState };

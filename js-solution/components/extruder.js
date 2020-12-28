@@ -1,10 +1,12 @@
-const biscuit = require("./biscuit");
+import { biscuit } from "./biscuit.js";
 
-module.exports = extruder = () => {
-    
+const extruder = () => {
+
     return {
         extrude: () => {
             return biscuit("Whole wheat");
         }
     }
-}
+};
+
+export { extruder };

@@ -1,4 +1,4 @@
-module.exports = motor = () => {
+const motor = () => {
 
     return {
         turnOn: () => {
@@ -8,4 +8,6 @@ module.exports = motor = () => {
 
         }
     }
-}
+};
+
+export { motor };

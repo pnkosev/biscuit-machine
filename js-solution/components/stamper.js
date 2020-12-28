@@ -1,6 +1,6 @@
-const { biscuitState } = require("./biscuitState")
+import { biscuitState } from "./biscuitState.js";
 
-module.exports = stamper = () => {
+const stamper = () => {
 
     return {
         stamp: (biscuit) => {
@@ -8,4 +8,6 @@ module.exports = stamper = () => {
             return biscuit;
         }
     };
-}
+};
+
+export { stamper };
