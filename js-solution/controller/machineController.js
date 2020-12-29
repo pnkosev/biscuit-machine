@@ -4,7 +4,6 @@ import { extruder } from "../components/extruder.js";
 import { stamper } from "../components/stamper.js";
 import { conveyor } from "../components/conveyor.js";
 import { biscuitMachineFactory } from "../components/biscuitMachine.js";
-// import biscuitState from "../components/biscuitState.js";
 
 const biscuitMachine = biscuitMachineFactory(
     oven(),
@@ -15,11 +14,37 @@ const biscuitMachine = biscuitMachineFactory(
     240
 );
 
+const setValueOfInput = (input, value) => {
+    input.value = value;
+};
+
 const setup = () => {
-    const okBtn = document.getElementById("onBtn");
-    okBtn.onclick = () => {
-        console.log(biscuitMachine.turnOn());
-    }
+
+    const ovenTempInput = document.getElementById("oven-temperature");
+    const biscuitCountInput = document.getElementById("biscuit-count");
+
+    setValueOfInput(ovenTempInput, 0);
+    setValueOfInput(biscuitCountInput, 0);
+
+    setInterval(() => {
+        const currentSwitchState = document.querySelector('input[name="switch-state"]:checked').value;
+
+        switch (currentSwitchState.toLowerCase()) {
+            case "off":
+                biscuitMachine.turnOff();
+                break;
+            case "on":
+                biscuitMachine.turnOn();
+                break;
+            case "paused":
+                biscuitMachine.pause();
+                break;
+        }
+
+        setValueOfInput(ovenTempInput, biscuitMachine.getOvenTemperature());
+        setValueOfInput(biscuitCountInput, biscuitMachine.getBiscuitCount());
+
+    }, 500);
 }
 
 window.onload = () => setup();

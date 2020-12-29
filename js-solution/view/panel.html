@@ -1,14 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Biscuit Machine</title>
     <script type="module" src="../controller/machineController.js"></script>
+    <link rel="stylesheet" href="./styles.css">
+    <title>Biscuit Machine</title>
 </head>
+
 <body>
+
+    <main>
+        <section id="biscuit-machine-ui">
+
+            <div id="display-panel">
+
+                <label for="oven-temperature">Oven Temperature:</label>
+                <input type="text" name="oven-temperature" id="oven-temperature">
+
+                <label for="biscuit-count">Biscuit count:</label>
+                <input type="text" name="biscuit-count" id="biscuit-count">
+
+            </div>
+
+            <div id="switch-panel">
     
-    <button id="onBtn">ON</button>
+                <input id="on" name="switch-state" value="on" type="radio" />
+                <label for="on">ON</label>
+        
+                <input id="pause" name="switch-state" value="paused" type="radio" />
+                <label for="pause">PAUSE</label>
+        
+                <input id="off" name="switch-state" value="off" type="radio" checked="checked" />
+                <label for="off">OFF</label>
+        
+            </div>
+        </section>
+    </main>
 
 </body>
+
 </html>

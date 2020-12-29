@@ -37,8 +37,6 @@ const biscuitMachineFactory = (oven, motor, extruder, stamper, conveyor, targetT
                     state.bisctuitCount++;
                 }
             }
-
-            return state.bisctuitCount;
         },
         pause: () => {
             machinery.oven.turnOn();
@@ -53,6 +51,12 @@ const biscuitMachineFactory = (oven, motor, extruder, stamper, conveyor, targetT
             } else {
                 machinery.motor.turnOff();
             }
+        },
+        getOvenTemperature: () => {
+            return machinery.oven.getCurrentTemp();
+        },
+        getBiscuitCount: () => {
+            return state.bisctuitCount;
         }
     }
 };

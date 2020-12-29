@@ -35,8 +35,6 @@ const oven = () => {
             } else {
                 decreaseTemp();
             }
-
-            console.log(state.currentTemp);
         },
         turnOff: () => {
             if (state.currentTemp > 0) {
